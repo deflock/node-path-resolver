@@ -1,27 +1,25 @@
 import nodepath from 'path';
-import {isFunction} from '@deflock/utils/lib/misc';
+
+/**
+ * @param {*} x
+ * @returns {boolean}
+ */
+function isFunction(x) {
+    return typeof x === 'function';
+}
 
 /**
  *
  */
 export default class PathResolver {
     /**
-     * @param {Object} namespaces
-     * @param {Object} aliases
      * @param {Object} options
      */
-    constructor({namespaces = {}, aliases = {}, options = {}} = {}) {
-        const {
-            basedir,
-            ...restOptions
-        } = options;
-
-        this.namespaces = namespaces;
-        this.aliases = aliases;
-
-        this.basedir = basedir ? nodepath.resolve(basedir) : null;
-
-        this.options = restOptions;
+    constructor(options = {}) {
+        this.options = options;
+        this.namespaces = options.namespaces || {};
+        this.aliases = options.aliases || {};
+        this.basedir = options.basedir ? nodepath.resolve(options.basedir) : null;
     }
 
     /**
