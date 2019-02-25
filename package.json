@@ -1,6 +1,6 @@
 {
   "name": "@deflock/path-resolver",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "MIT",
   "homepage": "https://github.com/deflock/node-path-resolver",
   "repository": "deflock/node-path-resolver",
@@ -21,7 +21,6 @@
     "prepublishOnly": "yarn test"
   },
   "dependencies": {
-    "@deflock/utils": "~0.1.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
