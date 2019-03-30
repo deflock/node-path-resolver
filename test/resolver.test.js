@@ -23,8 +23,9 @@ it('resolves', () => {
     ]);
 
     for (const p of paths) {
-        expect(resolver.relativeToBasedir(p[0], baseFilePath, true, {
+        expect(resolver.relativeToBasedir(p[0], baseFilePath, {
             isFromDir: false,
+            aliases: true,
         })).toBe(p[1].replace(/[\\/]+/g, nodepath.sep));
     }
 });
@@ -56,7 +57,7 @@ it('resolves namespaces', () => {
     ]);
 
     for (const p of paths) {
-        expect(resolver.relativeToBasedir(p[0], baseFilePath, true, {
+        expect(resolver.relativeToBasedir(p[0], baseFilePath, {
             isFromDir: false,
         })).toBe(p[1].replace(/[\\/]+/g, nodepath.sep));
     }

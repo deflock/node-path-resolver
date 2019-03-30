@@ -25,22 +25,20 @@ export default class PathResolver {
     /**
      * @param {string} path
      * @param {string|null} from
-     * @param {string|Array|boolean} aliases
      * @param {Object} options
      * @returns {string|null}
      */
-    absolute(path, from = null, aliases = true, options = {}) {
-        return this.resolve(path, from, aliases, options);
+    absolute(path, from = null, options = {}) {
+        return this.resolve(path, from, options);
     }
 
     /**
      * @param {string} path
      * @param {string|null} from
-     * @param {string|Array|boolean} aliases
      * @param {Object} options
      * @returns {string|null}
      */
-    relative(path, from = null, aliases = true, options = {}) {
+    relative(path, from = null, options = {}) {
         const {
             isFromDir = true,
         } = options;
@@ -48,7 +46,6 @@ export default class PathResolver {
         return this.doRelative(
             path,
             from,
-            aliases,
             options,
             from ? (isFromDir ? from : nodepath.dirname(from)) : (this.basedir || '')
         );
@@ -57,28 +54,26 @@ export default class PathResolver {
     /**
      * @param {string} path
      * @param {string|null} from
-     * @param {string|Array|boolean} aliases
      * @param {Object} options
      * @returns {string|null}
      */
-    relativeToBasedir(path, from = null, aliases = true, options = {}) {
-        return this.doRelative(path, from, aliases, options, this.basedir || '');
+    relativeToBasedir(path, from = null, options = {}) {
+        return this.doRelative(path, from, options, this.basedir || '');
     }
 
     /**
      * @param {string} path
      * @param {string} from
-     * @param {string|Array|boolean} aliases
      * @param {Object} options
      * @param {string} base
      * @returns {string|null}
      */
-    doRelative(path, from, aliases, options, base) {
+    doRelative(path, from, options, base) {
         const {
             prependDot = false,
         } = options;
 
-        const absolute = this.resolve(path, from, aliases, options);
+        const absolute = this.resolve(path, from, options);
 
         if (absolute == null) {
             return null;
@@ -92,13 +87,14 @@ export default class PathResolver {
     /**
      * @param {string} path
      * @param {string} from
-     * @param {string|Array|boolean} aliases
      * @param {Object} options
      * @returns {string|null}
      */
-    resolve(path, from, aliases, options = {}) {
+    resolve(path, from, options = {}) {
         const {
             isFromDir = true,
+            aliases = true,
+            aliasType = null,
         } = options;
 
         let resolved;
@@ -114,13 +110,13 @@ export default class PathResolver {
             return null;
         }
 
-        if (aliases === false) {
+        if (aliases === false || aliasType === false) {
             return resolved;
         }
 
-        const types = Array.isArray(aliases) ? aliases : [aliases];
+        const aliasTypes = Array.isArray(aliasType) ? aliasType : [aliasType];
 
-        for (const type of types) {
+        for (const type of aliasTypes) {
             const aliasResolved = this.resolveAlias(resolved, type === true ? null : type, options);
             if (aliasResolved !== null) {
                 return aliasResolved;
